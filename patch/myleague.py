@@ -14,7 +14,9 @@ class MyLeague(League):
 
 
     def get_owner_data(self):
-
+        '''This function adds primaryOwner IDs to teams, and adds a
+        list of league members that link to those IDs. there can be 
+        more than one member per team'''
         espn_data = self.espn_request.league_get(params={'view': 'mTeam'})
 
          # add primary owner ids for teams
@@ -43,3 +45,11 @@ class MyLeague(League):
                         'espn_owner_id' : member['id'],
                         'last_name' : member['lastName']
                     }
+    
+    def get_weekly_rosters(self):
+        '''Gets all of the weekly rosters for the season.
+        ESPN changes the format when they archive older seasons.
+        For archived seasons this function gets all starting 
+        rosters for matchups, but no bench players.
+        For non-archived seasons this function gets all players on 
+        rosters and thier positions for each scoring period'''
