@@ -7,6 +7,9 @@ class MyLeague(League):
         #TODO: add primary owner ids for teams
         espn_data = self.espn_request.league_get(params={'view': 'mTeam'})
         teamdata = espn_data.get('teams', None)
-        
+        if teamdata is None:
+            print('keyerror: failed to find key "teams"')
+            exit(0)
+
 
         #TODO: get weekly rosters
