@@ -1,6 +1,8 @@
 from espn_api.football import League
 
 import time
+
+import PlayerGame
 # this patch is intended to add some data from espn that the espn-api
 # package doesn't keep.
 
@@ -52,13 +54,7 @@ class MyLeague(League):
         }
         return self.espn_request.league_get(params=params)
 
-    def get_weekly_rosters(self):
-        '''Gets all of the weekly rosters for the season.
-        ESPN changes the format when they archive older seasons.
-        For years 2017 and previous this function gets all starting 
-        rosters for matchups, but no bench players.
-        For years 2018 and later seasons this function gets all players on 
-        rosters and thier positions for each scoring period'''
+    def _get_all_rosters_in_schedule(self):
         # Get all games in schedule
         schedule = []
         roster_key = 'rosterForMatchupPeriod' if self.year <= 2017 else 'rosterForCurrentScoringPeriod'
@@ -74,10 +70,41 @@ class MyLeague(League):
             # pull games with rosters out of week
             for game in data['schedule']:
                 if roster_key in game['away'].keys():
-                    schedule.append(game)
-         # verify no missing game ids
-        for game in schedule:
-            gid = game.get('id', None)
-            if gid == None:
-                print('ERROR:PARSING ERROR NO GID')
+                    # verify no missing game ids
+                    if game.get('id', None) == None:
+                        print('ERROR:PARSING ERROR NO GID')
+                        exit(0)
+                    schedule.append(game)      
+        return schedule
+
+    def get_weekly_rosters(self):
+        '''Gets all of the weekly rosters for the season.
+        ESPN changes the format when they archive older seasons.
+        For years 2017 and previous this function gets all starting 
+        rosters for matchups, but no bench players.
+        For years 2018 and later seasons this function gets all players on 
+        rosters and their positions for each scoring period'''
+        schedule = self._get_all_rosters_in_schedule()
+        roster_key = 'rosterForMatchupPeriod' if self.year <= 2017 else 'rosterForCurrentScoringPeriod'
+        weekly_rosters = {}
+        for team in self.teams:
+            weekly_rosters[team.team_id] = {}
+            week = 1
+            for game in schedule:
+                if game['away']['teamId'] == team.team_id:
+                    side = 'away'
+                elif game['home']['teamId'] == team.team_id:
+                    side = 'home'
+                else:
+                    continue
+                weekly_rosters[team.team_id][week] = []
+                game_id = game['id']
+                for player in game[side][roster_key]['entries']:
+                    weekly_rosters[team.team_id][week].append(PlayerGame(player, self.year, week, game_id))
+                week += 1
+            endweek = (self.currentMatchupPeriod + 1) if self.year <= 2017 else (self.current_week + 1)
+            if week != endweek:
+                print('ERROR:NOT ENOUGH GAMES FOUND FOR TEAM', team.team_id)
                 exit(0)
+        
+        return weekly_rosters
