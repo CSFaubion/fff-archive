@@ -75,3 +75,9 @@ class MyLeague(League):
             for game in data['schedule']:
                 if roster_key in game['away'].keys():
                     schedule.append(game)
+         # verify no missing game ids
+        for game in schedule:
+            gid = game.get('id', None)
+            if gid == None:
+                print('ERROR:PARSING ERROR NO GID')
+                exit(0)
