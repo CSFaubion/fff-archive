@@ -11,6 +11,7 @@ class MyLeague(League):
         self.get_owner_data()
         self.get_weekly_rosters()
 
+
     def get_owner_data(self):
         '''This function adds primaryOwner IDs to teams, and adds a
         list of league members that link to those IDs. there can be 
@@ -44,12 +45,19 @@ class MyLeague(League):
                         'last_name': member['lastName']
                     }
 
+    def _scoreboard_request(self, week):
+        params = {
+                'view': 'mScoreboard',
+                'scoringPeriodId': week
+            }
+        return self.espn_request.league_get(params=params)
+
     def get_weekly_rosters(self):
         '''Gets all of the weekly rosters for the season.
         ESPN changes the format when they archive older seasons.
-        For archived seasons this function gets all starting 
+        For years 2017 and previous this function gets all starting 
         rosters for matchups, but no bench players.
-        For non-archived seasons this function gets all players on 
+        For years 2018 and later seasons this function gets all players on 
         rosters and thier positions for each scoring period'''
 
         roster_key = 'rosterForMatchupPeriod' if self.year <= 2017 else 'rosterForCurrentScoringPeriod'
