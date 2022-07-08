@@ -1,5 +1,6 @@
 from espn_api.football import League
 
+import time
 # this patch is intended to add some data from espn that the espn-api
 # package doesn't keep.
 
@@ -10,7 +11,6 @@ class MyLeague(League):
                          swid=swid, username=username, password=password, debug=debug)
         self.get_owner_data()
         self.get_weekly_rosters()
-
 
     def get_owner_data(self):
         '''This function adds primaryOwner IDs to teams, and adds a
@@ -47,9 +47,9 @@ class MyLeague(League):
 
     def _scoreboard_request(self, week):
         params = {
-                'view': 'mScoreboard',
-                'scoringPeriodId': week
-            }
+            'view': 'mScoreboard',
+            'scoringPeriodId': week
+        }
         return self.espn_request.league_get(params=params)
 
     def get_weekly_rosters(self):
@@ -59,5 +59,19 @@ class MyLeague(League):
         rosters for matchups, but no bench players.
         For years 2018 and later seasons this function gets all players on 
         rosters and thier positions for each scoring period'''
-
+        # Get all games in schedule
+        schedule = []
         roster_key = 'rosterForMatchupPeriod' if self.year <= 2017 else 'rosterForCurrentScoringPeriod'
+        if self.current_week > 17:
+            print("Error: Current week greater than 17")
+        for i in range(1, (self.current_week+1)):
+            # if year before 2018 skip week 15 and 17
+            if self.year <= 2017:
+                if (i == 15) or (i == 17):
+                    continue
+            time.sleep(5)
+            data = self._scoreboard_request(year=self.year, week=i)
+            # pull games with rosters out of week
+            for game in data['schedule']:
+                if roster_key in game['away'].keys():
+                    schedule.append(game)
