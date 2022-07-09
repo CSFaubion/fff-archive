@@ -19,8 +19,8 @@ if __name__ == "__main__":
     league = League(
         league_id=creds.get("leagueId", -1),
         year=target_year,
-        espn_s2=creds.get("s2", ""),
-        swid=creds.get("swid", "")
+        espn_s2=creds.get("s2", None),
+        swid=creds.get("swid", None)
     )
 
     print(league)
