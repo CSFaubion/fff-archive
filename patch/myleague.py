@@ -2,7 +2,7 @@ from espn_api.football import League
 
 import time
 
-import PlayerGame
+from playergame import PlayerGame
 # this patch is intended to add some data from espn that the espn-api
 # package doesn't keep.
 
