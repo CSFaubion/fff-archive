@@ -4,6 +4,7 @@ import time
 
 from playergame import PlayerGame
 
+
 class MyLeague(League):
     def __init__(self, league_id: int, year: int, espn_s2=None, swid=None, username=None, password=None, debug=False):
         super().__init__(league_id=league_id, year=year, espn_s2=espn_s2,
@@ -85,7 +86,7 @@ class MyLeague(League):
         rosters and their positions for each scoring period'''
         schedule = self._get_all_rosters_in_schedule()
         if self.year <= 2017:
-            roster_key = 'rosterForMatchupPeriod'  
+            roster_key = 'rosterForMatchupPeriod'
         else:
             roster_key = 'rosterForCurrentScoringPeriod'
         weekly_rosters = {}
@@ -113,6 +114,12 @@ class MyLeague(League):
 
         return weekly_rosters
 
-
     def to_json(self):
-        pass
+        season = {
+            'league_id': self.league_id,
+            'year': self.year,
+            'league_name': self.settings.name
+        }
+        return {
+            "season": season
+        }
