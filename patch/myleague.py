@@ -121,7 +121,7 @@ class MyLeague(League):
                     for week, players in roster.items():
                         team.weekly_rosters[week] = players
 
-    def to_json(self):
+    def dump_league_data(self):
         '''this function outputs a dict that represents the league in
         the format I wanted to use for the data base.'''
         # season
