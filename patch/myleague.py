@@ -166,10 +166,25 @@ class MyLeague(League):
                     'espn_id': v
                 }
             )
+        # draftpicks
+        draftpicks = []
+        for pick in self.draft:
+            temp = {
+                # 'draftpick_id ' : AUTO
+                'team_id': pick.team.team_id,
+                'player_id': pick.playerId,
+                'round_num': pick.round_num,
+                'round_pick': pick.round_pick,
+                'pick_number': (((pick.round_num - 1) * self.settings.team_count) + pick.round_pick),
+                'bid_amount': pick.bid_amount,
+                'keeper_status': pick.keeper_status
+            }
+            draftpicks.append(temp)
         return {
             "season": season,
             "owners": owners,
             "players": players,
             "settings": settings,
-            "teams": teams
+            "teams": teams,
+            "draftpicks": draftpicks
         }
