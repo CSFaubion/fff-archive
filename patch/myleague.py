@@ -115,11 +115,13 @@ class MyLeague(League):
         return weekly_rosters
 
     def to_json(self):
+        # season
         season = {
             'league_id': self.league_id,
             'year': self.year,
             'league_name': self.settings.name
         }
+        # teams
         teams = []
         for team in self.teams:
             temp = {
@@ -131,6 +133,7 @@ class MyLeague(League):
                 'abbrev': team.team_abbrev
             }
             teams.append(temp)
+        # settings
         settings = {
             # 'setting_id' : AUTO
             # 'season_id' : AUTO
@@ -143,12 +146,30 @@ class MyLeague(League):
             'tie_rule': self.settings.tie_rule,
             'playoff_seed_tie_rule': self.settings.playoff_seed_tie_rule
         }
+        # owners
         owners = []
         for team in self.teams:
             owners.append(team.member)
+        # players
+        players = []
+        p_map = {}
+        for k, v in self.player_map.items():
+            try:
+                int(k)
+            except ValueError:
+                p_map[k] = v
+        for k, v in p_map.items():
+            players.append(
+                {
+                    'espn_player_name': k,
+                    'position': None,
+                    'espn_id': v
+                }
+            )
         return {
             "season": season,
-            'owners' : owners,
+            "owners": owners,
+            "players": players,
             "settings": settings,
             "teams": teams
         }
