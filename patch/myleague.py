@@ -112,7 +112,14 @@ class MyLeague(League):
                 print('ERROR:NOT ENOUGH GAMES FOUND FOR TEAM', team.team_id)
                 exit(0)
 
-        return weekly_rosters
+        for tid, roster in weekly_rosters.items():
+            for team in self.teams:
+                if tid != team.team_id:
+                    continue
+                else:
+                    team.weekly_rosters = {}
+                    for week, players in roster.items():
+                        team.weekly_rosters[week] = players
 
     def to_json(self):
         '''this function outputs a dict that represents the league in
