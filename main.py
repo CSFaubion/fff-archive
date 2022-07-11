@@ -3,6 +3,7 @@ import json
 # from espn_api.football import League
 
 from patch.myleague import MyLeague as League
+# from patch.playergame import PlayerGame
 
 # this file is intended to be the entry point for this project. change the
 # target year and enter your credentials into credentials.json
@@ -23,4 +24,6 @@ if __name__ == "__main__":
         swid=creds.get("swid", None)
     )
 
-    print(league)
+
+    with open("outtest.json", "w") as outfile:
+        json.dump(league.to_json(), outfile, indent=2)
