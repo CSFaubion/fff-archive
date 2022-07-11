@@ -115,6 +115,8 @@ class MyLeague(League):
         return weekly_rosters
 
     def to_json(self):
+        '''this function outputs a dict that represents the league in
+        the format I wanted to use for the data base.'''
         # season
         season = {
             'league_id': self.league_id,
@@ -180,11 +182,47 @@ class MyLeague(League):
                 'keeper_status': pick.keeper_status
             }
             draftpicks.append(temp)
+        # rosters and stats
+        rosters = []
+        stats = []
+        rid = 0
+        for team in self.teams:
+            for week, game in team.weekly_rosters.items():
+                tot_points = 0
+                proj_points = 0
+                for player in game:
+                    tot_points += player.total_points
+                    proj_points += player.projected_total_points
+                    gid = player.game_id
+                    temp_stat = {
+                        # 'stat_id' : AUTO
+                        'player_id': player.playerId,
+                        'roster_id': rid,
+                        'total_points': player.total_points,
+                        'projected_points': player.projected_total_points,
+                        'starting': True if player.lineup_slot != 'BE' else False,
+                        'position': player.lineup_slot,
+                        'pro_team': player.proTeam,
+                        'scoring_period': week
+                    }
+                    stats.append(temp_stat)
+                temp = {
+                    'roster_id': rid,
+                    'team_id': team.team_id,
+                    'game_id': gid,
+                    'total_points': tot_points,
+                    'projected_points': proj_points,
+                    'scoring_period': week
+                }
+                rid += 1
+                rosters.append(temp)
         return {
             "season": season,
             "owners": owners,
             "players": players,
             "settings": settings,
             "teams": teams,
-            "draftpicks": draftpicks
+            "draftpicks": draftpicks,
+            'rosters': rosters,
+            'stats': stats
         }
