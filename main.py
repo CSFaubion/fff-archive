@@ -1,9 +1,6 @@
 import json
 
-# from espn_api.football import League
-
 from patch.myleague import MyLeague as League
-# from patch.playergame import PlayerGame
 
 # this file is intended to be the entry point for this project. change the
 # target year and enter your credentials into credentials.json
