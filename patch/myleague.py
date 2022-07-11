@@ -2,7 +2,7 @@ from espn_api.football import League
 
 import time
 
-from playergame import PlayerGame
+from patch.playergame import PlayerGame
 
 
 class MyLeague(League):
@@ -66,7 +66,7 @@ class MyLeague(League):
                 if (i == 15) or (i == 17):
                     continue
             time.sleep(5)
-            data = self._scoreboard_request(year=self.year, week=i)
+            data = self._scoreboard_request(week=i)
             # pull games with rosters out of week
             for game in data['schedule']:
                 if roster_key in game['away'].keys():
