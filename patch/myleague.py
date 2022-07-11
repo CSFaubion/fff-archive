@@ -112,3 +112,7 @@ class MyLeague(League):
                 exit(0)
 
         return weekly_rosters
+
+
+    def to_json(self):
+        pass
