@@ -131,7 +131,21 @@ class MyLeague(League):
                 'abbrev': team.team_abbrev
             }
             teams.append(temp)
+        settings = {
+            # 'setting_id' : AUTO
+            # 'season_id' : AUTO
+            'reg_season_count': self.settings.reg_season_count,
+            'veto_votes_required': self.settings.veto_votes_required,
+            'team_count': self.settings.team_count,
+            'playoff_team_count ': self.settings.playoff_team_count,
+            'keeper_count': self.settings.keeper_count,
+            # 'trade_deadline' : self.settings.trade_deadline,
+            'tie_rule': self.settings.tie_rule,
+            'playoff_seed_tie_rule': self.settings.playoff_seed_tie_rule
+        }
+
         return {
             "season": season,
-            "teams": teams
+            "teams": teams,
+            "settings": settings
         }
