@@ -143,9 +143,12 @@ class MyLeague(League):
             'tie_rule': self.settings.tie_rule,
             'playoff_seed_tie_rule': self.settings.playoff_seed_tie_rule
         }
-
+        owners = []
+        for team in self.teams:
+            owners.append(team.member)
         return {
             "season": season,
-            "teams": teams,
-            "settings": settings
+            'owners' : owners,
+            "settings": settings,
+            "teams": teams
         }
