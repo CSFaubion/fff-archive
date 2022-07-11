@@ -120,6 +120,18 @@ class MyLeague(League):
             'year': self.year,
             'league_name': self.settings.name
         }
+        teams = []
+        for team in self.teams:
+            temp = {
+                # 'team_id' : AUTO
+                # 'season_id' : AUTO
+                'owner_id': team.primary_owner,
+                'espn_team_id': team.team_id,
+                'team_name': team.team_name,
+                'abbrev': team.team_abbrev
+            }
+            teams.append(temp)
         return {
-            "season": season
+            "season": season,
+            "teams": teams
         }
