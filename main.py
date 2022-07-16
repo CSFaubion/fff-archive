@@ -22,5 +22,5 @@ if __name__ == "__main__":
     )
 
 
-    with open("outtest.json", "w") as outfile:
-        json.dump(league.to_json(), outfile, indent=2)
+    with open("league2020.json", "w") as outfile:
+        json.dump(league.dump_league_data(), outfile, indent=2)
