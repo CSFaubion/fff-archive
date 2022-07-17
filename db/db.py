@@ -6,3 +6,8 @@ engine = sqlalchemy.create_engine(
 
 mapper_registry = registry()
 Base = mapper_registry.generate_base()
+
+
+
+if __name__ == "__main__":
+    pass
