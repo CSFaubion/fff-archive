@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, create_engine
-
+from sqlalchemy.orm import relationship
 from base import Base
 
 
@@ -10,6 +10,8 @@ class Season(Base):
     league_id = Column(Integer)
     year = Column(Integer)
     league_name = Column(String)
+
+    setting = relationship("Setting", back_populates="Seasons", uselist=False)
 
     def __repr__(self):
         return (
