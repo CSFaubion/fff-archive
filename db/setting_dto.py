@@ -17,7 +17,7 @@ class Setting(Base):
     tie_rule = Column(String)
     playoff_seed_tie_rule = Column(String)
 
-    season = relationship("Season", back_populates="Settings")
+    season = relationship("Season", back_populates="setting")
 
     
     def __repr__(self):

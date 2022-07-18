@@ -11,7 +11,7 @@ class Season(Base):
     year = Column(Integer)
     league_name = Column(String)
 
-    setting = relationship("Setting", back_populates="Seasons", uselist=False)
+    setting = relationship("Setting", back_populates="season", uselist=False)
 
     def __repr__(self):
         return (
