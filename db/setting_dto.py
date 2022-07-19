@@ -22,8 +22,14 @@ class Setting(Base):
     
     def __repr__(self):
         return (
-            f"Season(id={self.id!r}, league_id={self.league_id!r}"
-            f", year={self.year!r}, league_name={self.league_name!r})"
+            f"Setting(id={self.id!r}, season_id={self.season_id!r}"
+            f", reg_season_count={self.reg_season_count!r}"
+            f", veto_votes_required={self.veto_votes_required!r}"
+            f", team_count={self.team_count!r}"
+            f", playoff_team_count={self.playoff_team_count!r}"
+            f", keeper_count={self.keeper_count!r}"
+            f", tie_rule={self.tie_rule!r}"
+            f", playoff_seed_tie_rule={self.playoff_seed_tie_rule!r})"
         )
 
 
