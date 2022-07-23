@@ -1,17 +1,23 @@
-from sqlalchemy import Column, Integer, String, create_engine
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, create_engine
 from sqlalchemy.orm import relationship
 from base import Base
 
 
-class Player(Base):
-    __tablename__ = 'Players'
+class Draftpick(Base):
+    __tablename__ = 'Draftpicks'
 
     id = Column(Integer, primary_key=True)
-    espn_player_name = Column(String)
-    position = Column(String)
-    espn_id = Column(Integer)
 
-    draftpicks = relationship("Draftpick", back_populates="player")
+    team_id = Column(Integer)  # TODO:foreign key?
+    player_id = Column(Integer, ForeignKey('Players.id'))
+
+    round_number = Column(Integer)
+    round_pick = Column(Integer)
+    pick_number = Column(Integer)
+    bid_amount = Column(Integer)
+    keeper_status = Column(Boolean)
+
+    player = relationship("Player", back_populates="draftpicks")
 
     def __repr__(self):
         return (

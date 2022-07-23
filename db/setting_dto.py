@@ -19,7 +19,6 @@ class Setting(Base):
 
     season = relationship("Season", back_populates="setting")
 
-    
     def __repr__(self):
         return (
             f"Setting(id={self.id!r}, season_id={self.season_id!r}"
