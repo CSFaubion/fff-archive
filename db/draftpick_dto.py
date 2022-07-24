@@ -8,7 +8,7 @@ class Draftpick(Base):
 
     id = Column(Integer, primary_key=True)
 
-    team_id = Column(Integer)  # TODO:foreign key?
+    team_id = Column(Integer, ForeignKey('Teams.id'))
     player_id = Column(Integer, ForeignKey('Players.id'))
 
     round_number = Column(Integer)

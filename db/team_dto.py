@@ -9,13 +9,18 @@ class Team(Base):
     id = Column(Integer, primary_key=True)
 
     season_id = Column(Integer, ForeignKey('Seasons.id'))
-    primary_owner_id = Column(Integer)  # TODO: foreign key?
+    primary_owner_id = Column(Integer, ForeignKey('Owners.id'))
 
     espn_team_id = Column(String)
     team_name = Column(String)
     abbrev = Column(String)
 
     draftpicks = relationship("Draftpick", back_populates="player")
+    owners = relationship("Owner", back_populates="teams")
+    # TODO: this owners relationship requires more attention. is it many to many?
+    # may need to change the ER Diagram and add a members tables as many to many.
+    # there can be multiple members per team, but the other relation ship is a
+    # primary owner
 
     def __repr__(self):
         return (
