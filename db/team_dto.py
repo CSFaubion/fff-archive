@@ -17,17 +17,20 @@ class Team(Base):
 
     draftpicks = relationship("Draftpick", back_populates="player")
     owners = relationship("Owner", back_populates="teams")
+    rosters = relationship("Roster", back_populates="team")
     # TODO: this owners relationship requires more attention. is it many to many?
     # may need to change the ER Diagram and add a members tables as many to many.
-    # there can be multiple members per team, but the other relation ship is a
+    # there can be multiple members per team, but the other relationship is a
     # primary owner
 
     def __repr__(self):
         return (
-            f"Player(id={self.id!r}"
-            f", espn_player_name={self.espn_player_name!r}"
-            f", position={self.position!r}"
-            f", espn_id={self.espn_id!r})"
+            f"Team(id = {self.id!r},"
+            f" season_id = {self.season_id!r},"
+            f" primary_owner_id = {self.primary_owner_id!r},"
+            f" espn_team_id = {self.espn_team_id!r},"
+            f" team_name = {self.team_name!r},"
+            f" abbrev = {self.abbrev!r})"
         )
 
 
