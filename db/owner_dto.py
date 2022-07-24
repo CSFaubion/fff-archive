@@ -18,10 +18,11 @@ class Owner(Base):
 
     def __repr__(self):
         return (
-            f"Player(id={self.id!r}"
-            f", espn_player_name={self.espn_player_name!r}"
-            f", position={self.position!r}"
-            f", espn_id={self.espn_id!r})"
+            f"Owner(id={self.id!r}"
+            f", first_name={self.first_name!r}"
+            f", last_name={self.last_name!r}"
+            f", espn_owner_id={self.espn_owner_id!r}"
+            f", display_name={self.display_name!r})"
         )
 
 
