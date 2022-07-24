@@ -21,10 +21,14 @@ class Draftpick(Base):
 
     def __repr__(self):
         return (
-            f"Player(id={self.id!r}"
-            f", espn_player_name={self.espn_player_name!r}"
-            f", position={self.position!r}"
-            f", espn_id={self.espn_id!r})"
+            f"Draftpick(id={self.id!r}"
+            f", team_id={self.team_id!r}"
+            f", player_id={self.player_id!r}"
+            f", round_number={self.round_number!r}"
+            f", round_pick={self.round_pick!r}"
+            f", pick_number={self.pick_number!r}"
+            f", bid_amount={self.bid_amount!r}"
+            f", keeper_status={self.keeper_status!r})"
         )
 
 
