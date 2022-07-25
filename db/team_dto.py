@@ -16,9 +16,9 @@ class Team(Base):
     abbrev = Column(String)
 
     draftpicks = relationship("Draftpick", back_populates="player")
-    owners = relationship("Owner", back_populates="teams")
+    primary_owner = relationship("Owner", back_populates="teams")
     rosters = relationship("Roster", back_populates="team")
-    # TODO: this owners relationship requires more attention. is it many to many?
+    # TODO: this primary_owner relationship requires more attention. is it many to many?
     # may need to change the ER Diagram and add a members tables as many to many.
     # there can be multiple members per team, but the other relationship is a
     # primary owner

@@ -14,7 +14,7 @@ class Owner(Base):
     display_name = Column(String)
 
 
-    teams = relationship("Team", back_populates="draftpicks")
+    teams = relationship("Team", back_populates="primary_owner")
 
     def __repr__(self):
         return (
