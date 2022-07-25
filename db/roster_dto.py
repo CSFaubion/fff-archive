@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Float, ForeignKey, Integer, create_engine
 from sqlalchemy.orm import relationship
+
 from base import Base
 
 

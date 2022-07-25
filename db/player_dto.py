@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, create_engine
 from sqlalchemy.orm import relationship
+
 from base import Base
 
 
