@@ -12,6 +12,7 @@ class Player(Base):
     espn_id = Column(Integer)
 
     draftpicks = relationship("Draftpick", back_populates="player")
+    stats = relationship("Stat", back_populates="player")
 
     def __repr__(self):
         return (

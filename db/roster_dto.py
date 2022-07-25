@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, Float, ForeignKey, Integer, create_engine
+from sqlalchemy import Column, Float, ForeignKey, Integer, create_engine
 from sqlalchemy.orm import relationship
 from base import Base
 
@@ -16,6 +16,7 @@ class Roster(Base):
     scoring_period = Column(Integer)
 
     team = relationship("Team", back_populates="rosters")
+    stats = relationship("Stat", back_populates="roster")
 
     def __repr__(self):
         return (
@@ -24,7 +25,7 @@ class Roster(Base):
             f", game_id={self.game_id!r}"
             f", total_points={self.total_points!r}"
             f", projected_points={self.projected_points!r}"
-            f", scoring_period={self.scoring_period!r})"   
+            f", scoring_period={self.scoring_period!r})"
         )
 
 
