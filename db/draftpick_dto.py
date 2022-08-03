@@ -19,6 +19,7 @@ class Draftpick(Base):
     keeper_status = Column(Boolean)
 
     player = relationship("Player", back_populates="draftpicks")
+    team = relationship("Team", back_populates="draftpicks")
 
     def __repr__(self):
         return (

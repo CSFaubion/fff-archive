@@ -16,7 +16,7 @@ class Team(Base):
     team_name = Column(String)
     abbrev = Column(String)
 
-    draftpicks = relationship("Draftpick", back_populates="player")
+    draftpicks = relationship("Draftpick", back_populates="team")
     primary_owner = relationship("Owner", back_populates="teams")
     rosters = relationship("Roster", back_populates="team")
     # TODO: this primary_owner relationship requires more attention. is it many to many?
