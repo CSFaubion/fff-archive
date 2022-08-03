@@ -149,7 +149,7 @@ class MyLeague(League):
             'reg_season_count': self.settings.reg_season_count,
             'veto_votes_required': self.settings.veto_votes_required,
             'team_count': self.settings.team_count,
-            'playoff_team_count ': self.settings.playoff_team_count,
+            'playoff_team_count': self.settings.playoff_team_count,
             'keeper_count': self.settings.keeper_count,
             # 'trade_deadline' : self.settings.trade_deadline,
             'tie_rule': self.settings.tie_rule,
