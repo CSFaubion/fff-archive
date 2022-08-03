@@ -58,8 +58,8 @@ class MyLeague(League):
         # Get all games in schedule
         schedule = []
         roster_key = 'rosterForMatchupPeriod' if self.year <= 2017 else 'rosterForCurrentScoringPeriod'
-        if self.current_week > 17:
-            print("Error: Current week greater than 17")
+        if self.current_week > self.settings.reg_season_count + 4:
+            print("Error: Game count seems too high.")
         for i in range(1, (self.current_week+1)):
             # if year before 2018 skip week 15 and 17
             if self.year <= 2017:
