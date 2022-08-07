@@ -13,6 +13,7 @@ class Season(Base):
     league_name = Column(String)
 
     setting = relationship("Setting", back_populates="season", uselist=False)
+    teams = relationship("Team", back_populates="season")
 
     def __repr__(self):
         return (

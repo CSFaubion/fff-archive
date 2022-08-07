@@ -8,14 +8,13 @@ class Team(Base):
     __tablename__ = 'Teams'
 
     id = Column(Integer, primary_key=True)
-
     season_id = Column(Integer, ForeignKey('Seasons.id'))
-    primary_owner_id = Column(Integer, ForeignKey('Owners.id'))
-
+    owner_id = Column(Integer, ForeignKey('Owners.id'))
     espn_team_id = Column(String)
     team_name = Column(String)
     abbrev = Column(String)
 
+    season = relationship("Season", back_populates="teams")
     draftpicks = relationship("Draftpick", back_populates="team")
     primary_owner = relationship("Owner", back_populates="teams")
     rosters = relationship("Roster", back_populates="team")
@@ -28,7 +27,7 @@ class Team(Base):
         return (
             f"Team(id = {self.id!r},"
             f" season_id = {self.season_id!r},"
-            f" primary_owner_id = {self.primary_owner_id!r},"
+            f" primary_owner_id = {self.owner_id!r},"
             f" espn_team_id = {self.espn_team_id!r},"
             f" team_name = {self.team_name!r},"
             f" abbrev = {self.abbrev!r})"
