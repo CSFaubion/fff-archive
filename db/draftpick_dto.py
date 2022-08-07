@@ -8,11 +8,9 @@ class Draftpick(Base):
     __tablename__ = 'Draftpicks'
 
     id = Column(Integer, primary_key=True)
-
     team_id = Column(Integer, ForeignKey('Teams.id'))
     player_id = Column(Integer, ForeignKey('Players.id'))
-
-    round_number = Column(Integer)
+    round_num = Column(Integer)
     round_pick = Column(Integer)
     pick_number = Column(Integer)
     bid_amount = Column(Integer)
@@ -26,7 +24,7 @@ class Draftpick(Base):
             f"Draftpick(id={self.id!r}"
             f", team_id={self.team_id!r}"
             f", player_id={self.player_id!r}"
-            f", round_number={self.round_number!r}"
+            f", round_num={self.round_num!r}"
             f", round_pick={self.round_pick!r}"
             f", pick_number={self.pick_number!r}"
             f", bid_amount={self.bid_amount!r}"
