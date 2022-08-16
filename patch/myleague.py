@@ -5,6 +5,10 @@ import time
 from patch.playergame import PlayerGame
 
 
+class ForeignKeyConstraint(Exception):
+    pass
+
+
 class MyLeague(League):
     def __init__(self, league_id: int, year: int, espn_s2=None, swid=None, username=None, password=None, debug=False):
         super().__init__(league_id=league_id, year=year, espn_s2=espn_s2,
@@ -121,9 +125,32 @@ class MyLeague(League):
                     for week, players in roster.items():
                         team.weekly_rosters[week] = players
 
-    def dump_league_data(self):
+    def check_foreign_key_constraints(self, data: dict):
+        owner_ids = [x["espn_owner_id"] for x in data["owners"]]
+        player_ids = [x["espn_id"] for x in data["players"]]
+        team_ids = [x["espn_team_id"] for x in data["teams"]]
+        roster_ids = [x["roster_id"] for x in data["rosters"]]
+
+        for team in data["teams"]:
+            if team["owner_id"] not in owner_ids:
+                raise ForeignKeyConstraint("Team:Owner")
+        for draftpick in data["draftpicks"]:
+            if draftpick["player_id"] not in player_ids:
+                raise ForeignKeyConstraint("Draftpick:Player")
+            if draftpick["team_id"] not in team_ids:
+                raise ForeignKeyConstraint("Team:Draftpick")
+        for roster in data["rosters"]:
+            if roster["team_id"] not in team_ids:
+                raise ForeignKeyConstraint("Team:Roster")
+        for stat in data["stats"]:
+            if stat["roster_id"] not in roster_ids:
+                raise ForeignKeyConstraint("Roster:Stat")
+            if stat["player_id"] not in player_ids:
+                raise ForeignKeyConstraint("Stat:Player")
+
+    def dump_league_data(self, integrity=False):
         '''this function outputs a dict that represents the league in
-        the format I wanted to use for the data base.'''
+        the format I wanted to use for the database.'''
         # season
         season = {
             'league_id': self.league_id,
@@ -175,9 +202,21 @@ class MyLeague(League):
                     'espn_id': v
                 }
             )
+        # player lookup table to make sure we get all the players
+        player_lookup = {}
+        for player in players:
+            player_lookup[player["espn_id"]] = player
         # draftpicks
         draftpicks = []
         for pick in self.draft:
+            if player_lookup.get(pick.playerId, None) == None:
+                temp = {
+                    'espn_player_name': pick.playerName,
+                    'position': None,
+                    'espn_id': pick.playerId
+                }
+                player_lookup[pick.playerId] = temp
+                players.append(temp)
             temp = {
                 # 'draftpick_id ' : AUTO
                 'team_id': pick.team.team_id,
@@ -198,6 +237,14 @@ class MyLeague(League):
                 tot_points = 0
                 proj_points = 0
                 for player in game:
+                    if player_lookup.get(player.playerId, None) == None:
+                        temp = {
+                            'espn_player_name': player.name,
+                            'position': None,
+                            'espn_id': player.playerId
+                        }
+                        player_lookup[player.playerId] = temp
+                        players.append(temp)
                     tot_points += player.total_points
                     proj_points += player.projected_total_points
                     gid = player.game_id
@@ -223,7 +270,7 @@ class MyLeague(League):
                 }
                 rid += 1
                 rosters.append(temp)
-        return {
+        output_data = {
             "season": season,
             "owners": owners,
             "players": players,
@@ -233,3 +280,10 @@ class MyLeague(League):
             'rosters': rosters,
             'stats': stats
         }
+        try:
+            self.check_foreign_key_constraints(output_data)
+        except ForeignKeyConstraint as e:
+            if integrity == True:
+                raise e
+            else:
+                return output_data
