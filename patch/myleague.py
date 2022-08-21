@@ -129,7 +129,7 @@ class MyLeague(League):
         owner_ids = [x["espn_owner_id"] for x in data["owners"]]
         player_ids = [x["espn_id"] for x in data["players"]]
         team_ids = [x["espn_team_id"] for x in data["teams"]]
-        roster_ids = [x["roster_id"] for x in data["rosters"]]
+        roster_ids = [x["id"] for x in data["rosters"]]
 
         for team in data["teams"]:
             if team["owner_id"] not in owner_ids:
@@ -261,7 +261,7 @@ class MyLeague(League):
                     }
                     stats.append(temp_stat)
                 temp = {
-                    'roster_id': rid,
+                    'id': rid,
                     'team_id': team.team_id,
                     'game_id': gid,
                     'total_points': tot_points,
