@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, create_engine
+from sqlalchemy import Column, Integer, String, UniqueConstraint, create_engine
 from sqlalchemy.orm import relationship
 
 from base import Base
@@ -11,6 +11,9 @@ class Season(Base):
     league_id = Column(Integer)
     year = Column(Integer)
     league_name = Column(String)
+
+    __table_args__ = (UniqueConstraint(
+        'league_id', 'year', name='idx_league_year'),)
 
     setting = relationship("Setting", back_populates="season", uselist=False)
     teams = relationship("Team", back_populates="season")

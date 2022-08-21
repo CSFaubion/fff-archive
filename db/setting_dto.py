@@ -1,4 +1,5 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, create_engine
+from sqlalchemy import (Column, ForeignKey, Integer, String, UniqueConstraint,
+                        create_engine)
 from sqlalchemy.orm import relationship
 
 from base import Base
@@ -17,6 +18,9 @@ class Setting(Base):
     keeper_count = Column(Integer)
     tie_rule = Column(String)
     playoff_seed_tie_rule = Column(String)
+
+    __table_args__ = (UniqueConstraint(
+        'season_id', name='idx_season_id'),)
 
     season = relationship("Season", back_populates="setting")
 

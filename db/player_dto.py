@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, create_engine
+from sqlalchemy import Column, Integer, String, UniqueConstraint, create_engine
 from sqlalchemy.orm import relationship
 
 from base import Base
@@ -11,6 +11,9 @@ class Player(Base):
     espn_player_name = Column(String)
     position = Column(String)
     espn_id = Column(Integer)
+
+    __table_args__ = (UniqueConstraint(
+        'espn_id', name='idx_espn_id'),)
 
     draftpicks = relationship("Draftpick", back_populates="player")
     stats = relationship("Stat", back_populates="player")

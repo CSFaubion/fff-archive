@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, create_engine
+from sqlalchemy import Column, ForeignKey, Integer, String, UniqueConstraint, create_engine
 from sqlalchemy.orm import relationship
 
 from base import Base
@@ -14,6 +14,8 @@ class Owner(Base):
     espn_owner_id = Column(String)
     display_name = Column(String)
 
+    __table_args__ = (UniqueConstraint(
+        'espn_owner_id', name='idx_espn_owner_id'),)
 
     teams = relationship("Team", back_populates="primary_owner")
 

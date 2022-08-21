@@ -1,5 +1,5 @@
 from sqlalchemy import (Boolean, Column, Float, ForeignKey, Integer, String,
-                        create_engine)
+                        UniqueConstraint, create_engine)
 from sqlalchemy.orm import relationship
 
 from base import Base
@@ -19,6 +19,9 @@ class Stat(Base):
     position = Column(String)
     pro_team = Column(String)
     scoring_period = Column(Integer)
+
+    __table_args__ = (UniqueConstraint(
+        'player_id', 'roster_id', name='idx_player_roster'),)
 
     player = relationship("Player", back_populates="stats")
     roster = relationship("Roster", back_populates="stats")

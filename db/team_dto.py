@@ -1,4 +1,5 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, create_engine
+from sqlalchemy import (Column, ForeignKey, Integer, String, UniqueConstraint,
+                        create_engine)
 from sqlalchemy.orm import relationship
 
 from base import Base
@@ -13,6 +14,9 @@ class Team(Base):
     espn_team_id = Column(String)
     team_name = Column(String)
     abbrev = Column(String)
+
+    __table_args__ = (UniqueConstraint(
+        'season_id', 'espn_team_id', name='idx_season_team_id'),)
 
     season = relationship("Season", back_populates="teams")
     draftpicks = relationship("Draftpick", back_populates="team")

@@ -1,4 +1,5 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, create_engine
+from sqlalchemy import (Boolean, Column, ForeignKey, Integer, UniqueConstraint,
+                        create_engine)
 from sqlalchemy.orm import relationship
 
 from base import Base
@@ -15,6 +16,9 @@ class Draftpick(Base):
     pick_number = Column(Integer)
     bid_amount = Column(Integer)
     keeper_status = Column(Boolean)
+
+    __table_args__ = (UniqueConstraint(
+        'team_id', 'pick_number', name='idx_team_id_pick_number'),)
 
     player = relationship("Player", back_populates="draftpicks")
     team = relationship("Team", back_populates="draftpicks")
