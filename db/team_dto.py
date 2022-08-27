@@ -9,9 +9,9 @@ class Team(Base):
     __tablename__ = 'Teams'
 
     id = Column(Integer, primary_key=True)
-    season_id = Column(Integer, ForeignKey('Seasons.id'))
-    owner_id = Column(Integer, ForeignKey('Owners.id'))
-    espn_team_id = Column(String)
+    season_id = Column(Integer, ForeignKey('Seasons.id'), nullable=False)
+    owner_id = Column(Integer, ForeignKey('Owners.id'), nullable=False)
+    espn_team_id = Column(String, nullable=False)
     team_name = Column(String)
     abbrev = Column(String)
 

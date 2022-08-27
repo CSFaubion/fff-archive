@@ -9,11 +9,11 @@ class Draftpick(Base):
     __tablename__ = 'Draftpicks'
 
     id = Column(Integer, primary_key=True)
-    team_id = Column(Integer, ForeignKey('Teams.id'))
-    player_id = Column(Integer, ForeignKey('Players.id'))
+    team_id = Column(Integer, ForeignKey('Teams.id'), nullable=False)
+    player_id = Column(Integer, ForeignKey('Players.id'), nullable=False)
     round_num = Column(Integer)
     round_pick = Column(Integer)
-    pick_number = Column(Integer)
+    pick_number = Column(Integer, nullable=False)
     bid_amount = Column(Integer)
     keeper_status = Column(Boolean)
 

@@ -8,9 +8,9 @@ class Season(Base):
     __tablename__ = 'Seasons'
 
     id = Column(Integer, primary_key=True)
-    league_id = Column(Integer)
-    year = Column(Integer)
-    league_name = Column(String)
+    league_id = Column(Integer, nullable=False)
+    year = Column(Integer, nullable=False)
+    league_name = Column(String, nullable=False)
 
     __table_args__ = (UniqueConstraint(
         'league_id', 'year', name='idx_league_year'),)

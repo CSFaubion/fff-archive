@@ -9,18 +9,16 @@ class Setting(Base):
     __tablename__ = 'Settings'
 
     id = Column(Integer, primary_key=True)
-    season_id = Column(Integer, ForeignKey('Seasons.id'))
+    season_id = Column(Integer, ForeignKey('Seasons.id'),
+                       unique=True, nullable=False)
 
-    reg_season_count = Column(Integer)
+    reg_season_count = Column(Integer, nullable=False)
     veto_votes_required = Column(Integer)
-    team_count = Column(Integer)
-    playoff_team_count = Column(Integer)
+    team_count = Column(Integer, nullable=False)
+    playoff_team_count = Column(Integer, nullable=False)
     keeper_count = Column(Integer)
-    tie_rule = Column(String)
-    playoff_seed_tie_rule = Column(String)
-
-    __table_args__ = (UniqueConstraint(
-        'season_id', name='idx_season_id'),)
+    tie_rule = Column(String, nullable=False)
+    playoff_seed_tie_rule = Column(String, nullable=False)
 
     season = relationship("Season", back_populates="setting")
 

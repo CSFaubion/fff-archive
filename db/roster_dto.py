@@ -10,12 +10,12 @@ class Roster(Base):
 
     id = Column(Integer, primary_key=True)
 
-    team_id = Column(Integer, ForeignKey('Teams.id'))
+    team_id = Column(Integer, ForeignKey('Teams.id'), nullable=False)
 
-    game_id = Column(Integer)
-    total_points = Column(Float)
+    game_id = Column(Integer, nullable=False)
+    total_points = Column(Float, nullable=False)
     projected_points = Column(Float)
-    scoring_period = Column(Integer)
+    scoring_period = Column(Integer, nullable=False)
 
     __table_args__ = (UniqueConstraint(
         'team_id', 'scoring_period', name='idx_team_scoring_period'),)

@@ -10,15 +10,15 @@ class Stat(Base):
 
     id = Column(Integer, primary_key=True)
 
-    player_id = Column(Integer, ForeignKey('Players.id'))
-    roster_id = Column(Integer, ForeignKey('Rosters.id'))
+    player_id = Column(Integer, ForeignKey('Players.id'), nullable=False)
+    roster_id = Column(Integer, ForeignKey('Rosters.id'), nullable=False)
 
-    total_points = Column(Float)
+    total_points = Column(Float, nullable=False)
     projected_points = Column(Float)
     starting = Column(Boolean)
     position = Column(String)
     pro_team = Column(String)
-    scoring_period = Column(Integer)
+    scoring_period = Column(Integer, nullable=False)
 
     __table_args__ = (UniqueConstraint(
         'player_id', 'roster_id', name='idx_player_roster'),)

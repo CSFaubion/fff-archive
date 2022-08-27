@@ -11,11 +11,8 @@ class Owner(Base):
 
     first_name = Column(String)
     last_name = Column(String)
-    espn_owner_id = Column(String)
+    espn_owner_id = Column(String, unique=True, nullable=False)
     display_name = Column(String)
-
-    __table_args__ = (UniqueConstraint(
-        'espn_owner_id', name='idx_espn_owner_id'),)
 
     teams = relationship("Team", back_populates="primary_owner")
 

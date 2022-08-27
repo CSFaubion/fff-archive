@@ -1,3 +1,4 @@
+from enum import unique
 from sqlalchemy import Column, Integer, String, UniqueConstraint, create_engine
 from sqlalchemy.orm import relationship
 
@@ -8,12 +9,9 @@ class Player(Base):
     __tablename__ = 'Players'
 
     id = Column(Integer, primary_key=True)
-    espn_player_name = Column(String)
+    espn_player_name = Column(String, nullable=False)
     position = Column(String)
-    espn_id = Column(Integer)
-
-    __table_args__ = (UniqueConstraint(
-        'espn_id', name='idx_espn_id'),)
+    espn_id = Column(Integer, unique=True, nullable=False)
 
     draftpicks = relationship("Draftpick", back_populates="player")
     stats = relationship("Stat", back_populates="player")
