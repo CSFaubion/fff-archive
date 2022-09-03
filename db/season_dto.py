@@ -5,15 +5,14 @@ from base import Base
 
 
 class Season(Base):
-    __tablename__ = 'Seasons'
+    __tablename__ = "Seasons"
 
     id = Column(Integer, primary_key=True)
     league_id = Column(Integer, nullable=False)
     year = Column(Integer, nullable=False)
     league_name = Column(String, nullable=False)
 
-    __table_args__ = (UniqueConstraint(
-        'league_id', 'year', name='idx_league_year'),)
+    __table_args__ = (UniqueConstraint("league_id", "year", name="idx_league_year"),)
 
     setting = relationship("Setting", back_populates="season", uselist=False)
     teams = relationship("Team", back_populates="season")
@@ -26,6 +25,5 @@ class Season(Base):
 
 
 if __name__ == "__main__":
-    engine = create_engine(
-        "sqlite+pysqlite:///:memory:", echo=True, future=True)
+    engine = create_engine("sqlite+pysqlite:///:memory:", echo=True, future=True)
     Base.metadata.create_all(engine)

@@ -1,17 +1,25 @@
-from sqlalchemy import (Boolean, Column, Float, ForeignKey, Integer, String,
-                        UniqueConstraint, create_engine)
+from sqlalchemy import (
+    Boolean,
+    Column,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+    UniqueConstraint,
+    create_engine,
+)
 from sqlalchemy.orm import relationship
 
 from base import Base
 
 
 class Stat(Base):
-    __tablename__ = 'Stats'
+    __tablename__ = "Stats"
 
     id = Column(Integer, primary_key=True)
 
-    player_id = Column(Integer, ForeignKey('Players.id'), nullable=False)
-    roster_id = Column(Integer, ForeignKey('Rosters.id'), nullable=False)
+    player_id = Column(Integer, ForeignKey("Players.id"), nullable=False)
+    roster_id = Column(Integer, ForeignKey("Rosters.id"), nullable=False)
 
     total_points = Column(Float, nullable=False)
     projected_points = Column(Float)
@@ -20,8 +28,9 @@ class Stat(Base):
     pro_team = Column(String)
     scoring_period = Column(Integer, nullable=False)
 
-    __table_args__ = (UniqueConstraint(
-        'player_id', 'roster_id', name='idx_player_roster'),)
+    __table_args__ = (
+        UniqueConstraint("player_id", "roster_id", name="idx_player_roster"),
+    )
 
     player = relationship("Player", back_populates="stats")
     roster = relationship("Roster", back_populates="stats")
@@ -41,6 +50,5 @@ class Stat(Base):
 
 
 if __name__ == "__main__":
-    engine = create_engine(
-        "sqlite+pysqlite:///:memory:", echo=True, future=True)
+    engine = create_engine("sqlite+pysqlite:///:memory:", echo=True, future=True)
     Base.metadata.create_all(engine)

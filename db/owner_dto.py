@@ -1,11 +1,18 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, UniqueConstraint, create_engine
+from sqlalchemy import (
+    Column,
+    ForeignKey,
+    Integer,
+    String,
+    UniqueConstraint,
+    create_engine,
+)
 from sqlalchemy.orm import relationship
 
 from base import Base
 
 
 class Owner(Base):
-    __tablename__ = 'Owners'
+    __tablename__ = "Owners"
 
     id = Column(Integer, primary_key=True)
 
@@ -27,6 +34,5 @@ class Owner(Base):
 
 
 if __name__ == "__main__":
-    engine = create_engine(
-        "sqlite+pysqlite:///:memory:", echo=True, future=True)
+    engine = create_engine("sqlite+pysqlite:///:memory:", echo=True, future=True)
     Base.metadata.create_all(engine)

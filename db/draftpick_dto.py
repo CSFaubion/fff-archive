@@ -1,24 +1,31 @@
-from sqlalchemy import (Boolean, Column, ForeignKey, Integer, UniqueConstraint,
-                        create_engine)
+from sqlalchemy import (
+    Boolean,
+    Column,
+    ForeignKey,
+    Integer,
+    UniqueConstraint,
+    create_engine,
+)
 from sqlalchemy.orm import relationship
 
 from base import Base
 
 
 class Draftpick(Base):
-    __tablename__ = 'Draftpicks'
+    __tablename__ = "Draftpicks"
 
     id = Column(Integer, primary_key=True)
-    team_id = Column(Integer, ForeignKey('Teams.id'), nullable=False)
-    player_id = Column(Integer, ForeignKey('Players.id'), nullable=False)
+    team_id = Column(Integer, ForeignKey("Teams.id"), nullable=False)
+    player_id = Column(Integer, ForeignKey("Players.id"), nullable=False)
     round_num = Column(Integer)
     round_pick = Column(Integer)
     pick_number = Column(Integer, nullable=False)
     bid_amount = Column(Integer)
     keeper_status = Column(Boolean)
 
-    __table_args__ = (UniqueConstraint(
-        'team_id', 'pick_number', name='idx_team_id_pick_number'),)
+    __table_args__ = (
+        UniqueConstraint("team_id", "pick_number", name="idx_team_id_pick_number"),
+    )
 
     player = relationship("Player", back_populates="draftpicks")
     team = relationship("Team", back_populates="draftpicks")
@@ -37,6 +44,5 @@ class Draftpick(Base):
 
 
 if __name__ == "__main__":
-    engine = create_engine(
-        "sqlite+pysqlite:///:memory:", echo=True, future=True)
+    engine = create_engine("sqlite+pysqlite:///:memory:", echo=True, future=True)
     Base.metadata.create_all(engine)

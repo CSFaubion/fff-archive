@@ -6,7 +6,7 @@ from base import Base
 
 
 class Player(Base):
-    __tablename__ = 'Players'
+    __tablename__ = "Players"
 
     id = Column(Integer, primary_key=True)
     espn_player_name = Column(String, nullable=False)
@@ -26,6 +26,5 @@ class Player(Base):
 
 
 if __name__ == "__main__":
-    engine = create_engine(
-        "sqlite+pysqlite:///:memory:", echo=True, future=True)
+    engine = create_engine("sqlite+pysqlite:///:memory:", echo=True, future=True)
     Base.metadata.create_all(engine)

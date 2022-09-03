@@ -16,35 +16,40 @@ from team_dto import Team
 
 # engine = sqlalchemy.create_engine(
 #     "sqlite+pysqlite:///:memory:", echo=True, future=True)
-engine = sqlalchemy.create_engine(
-    "sqlite+pysqlite:///b.db", echo=False, future=True)
+engine = sqlalchemy.create_engine("sqlite+pysqlite:///b.db", echo=False, future=True)
 
 
-def check_relationships(season: Season, setting: Setting,
-                        teams: List[Team], draftpicks: List[Draftpick],
-                        rosters: List[Roster], stats: List[Stat]
-                        ):
-    assert(season.setting is not None)
-    assert(setting.season is not None)
+def check_relationships(
+    season: Season,
+    setting: Setting,
+    teams: List[Team],
+    draftpicks: List[Draftpick],
+    rosters: List[Roster],
+    stats: List[Stat],
+):
+    assert season.setting is not None
+    assert setting.season is not None
     for team in teams:
-        assert(team.primary_owner is not None)
-        assert(team.season is not None)
-        assert(len(team.draftpicks) > 0)
-        assert(len(team.rosters) > 0)
+        assert team.primary_owner is not None
+        assert team.season is not None
+        assert len(team.draftpicks) > 0
+        assert len(team.rosters) > 0
     for pick in draftpicks:
-        assert(pick.team is not None)
-        assert(pick.player is not None)
+        assert pick.team is not None
+        assert pick.player is not None
     for roster in rosters:
-        assert(roster.team is not None)
-        assert(len(roster.stats) > 0)
+        assert roster.team is not None
+        assert len(roster.stats) > 0
     for stat in stats:
-        assert(stat.roster is not None)
-        assert(stat.player is not None)
-    assert(len(teams) == setting.team_count)
+        assert stat.roster is not None
+        assert stat.player is not None
+    assert len(teams) == setting.team_count
     # assert(len(rosters) == setting.team_count * (setting.reg_season_count + 4))
 
 
-def insert_unknown_players(session: sqlalchemy.orm.session.Session, player_lookup: dict):
+def insert_unknown_players(
+    session: sqlalchemy.orm.session.Session, player_lookup: dict
+):
     players = session.query(Player).all()
     players_by_id = {player.espn_id: player for player in players}
     for id, player in player_lookup.items():
@@ -65,9 +70,11 @@ def insert_unknown_owners(session: sqlalchemy.orm.session.Session, owner_lookup:
 
 
 def season_exists(session: sqlalchemy.orm.session.Session, season: Season):
-    return session.query(Season).filter(Season.league_id == season.league_id,
-                                        Season.year == season.year
-                                        ).one_or_none()
+    return (
+        session.query(Season)
+        .filter(Season.league_id == season.league_id, Season.year == season.year)
+        .one_or_none()
+    )
 
 
 def add_league(session: sqlalchemy.orm.session.Session, data: dict):
@@ -81,15 +88,12 @@ def add_league(session: sqlalchemy.orm.session.Session, data: dict):
     rosters = [Roster(**roster) for roster in data["rosters"]]
     stats = [Stat(**stat) for stat in data["stats"]]
 
-    assert(season_exists(session=session, season=season) is None)
+    assert season_exists(session=session, season=season) is None
 
-    insert_unknown_players(
-        session, {player.espn_id: player for player in players})
-    player_lookup = {
-        player.espn_id: player for player in session.query(Player).all()}
+    insert_unknown_players(session, {player.espn_id: player for player in players})
+    player_lookup = {player.espn_id: player for player in session.query(Player).all()}
 
-    insert_unknown_owners(
-        session, {owner.espn_owner_id: owner for owner in owners})
+    insert_unknown_owners(session, {owner.espn_owner_id: owner for owner in owners})
     owners = [owner for owner in session.query(Owner).all()]
 
     # # add relationships
@@ -111,7 +115,7 @@ def add_league(session: sqlalchemy.orm.session.Session, data: dict):
         espn_player_id = pick.player_id
         pick.player_id = None
         temp = player_lookup.get(espn_player_id, None)
-        assert(temp is not None)
+        assert temp is not None
         # draftpicks:players
         pick.player = temp
         espn_team_id = pick.team_id
@@ -135,7 +139,7 @@ def add_league(session: sqlalchemy.orm.session.Session, data: dict):
         player_id = stat.player_id
         stat.player_id = None
         temp = player_lookup.get(player_id, None)
-        assert(temp is not None)
+        assert temp is not None
         # stats:players
         stat.player = temp
         roster_id = stat.roster_id
@@ -150,12 +154,14 @@ def add_league(session: sqlalchemy.orm.session.Session, data: dict):
     for roster in rosters:
         roster.id = None
 
-    check_relationships(season=season,
-                        setting=setting,
-                        teams=teams,
-                        draftpicks=draftpicks,
-                        rosters=rosters,
-                        stats=stats)
+    check_relationships(
+        season=season,
+        setting=setting,
+        teams=teams,
+        draftpicks=draftpicks,
+        rosters=rosters,
+        stats=stats,
+    )
 
     session.add(season)
     session.add(setting)
@@ -174,7 +180,7 @@ if __name__ == "__main__":
     session = Session()
 
     for i in range(2014, 2022):
-        with open("league"+str(i)+".json", "r") as infile:
+        with open("league" + str(i) + ".json", "r") as infile:
             data = json.load(infile)
 
         add_league(session, data)

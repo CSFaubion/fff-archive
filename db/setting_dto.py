@@ -1,16 +1,21 @@
-from sqlalchemy import (Column, ForeignKey, Integer, String, UniqueConstraint,
-                        create_engine)
+from sqlalchemy import (
+    Column,
+    ForeignKey,
+    Integer,
+    String,
+    UniqueConstraint,
+    create_engine,
+)
 from sqlalchemy.orm import relationship
 
 from base import Base
 
 
 class Setting(Base):
-    __tablename__ = 'Settings'
+    __tablename__ = "Settings"
 
     id = Column(Integer, primary_key=True)
-    season_id = Column(Integer, ForeignKey('Seasons.id'),
-                       unique=True, nullable=False)
+    season_id = Column(Integer, ForeignKey("Seasons.id"), unique=True, nullable=False)
 
     reg_season_count = Column(Integer, nullable=False)
     veto_votes_required = Column(Integer)
@@ -36,6 +41,5 @@ class Setting(Base):
 
 
 if __name__ == "__main__":
-    engine = create_engine(
-        "sqlite+pysqlite:///:memory:", echo=True, future=True)
+    engine = create_engine("sqlite+pysqlite:///:memory:", echo=True, future=True)
     Base.metadata.create_all(engine)

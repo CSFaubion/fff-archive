@@ -1,22 +1,29 @@
-from sqlalchemy import (Column, ForeignKey, Integer, String, UniqueConstraint,
-                        create_engine)
+from sqlalchemy import (
+    Column,
+    ForeignKey,
+    Integer,
+    String,
+    UniqueConstraint,
+    create_engine,
+)
 from sqlalchemy.orm import relationship
 
 from base import Base
 
 
 class Team(Base):
-    __tablename__ = 'Teams'
+    __tablename__ = "Teams"
 
     id = Column(Integer, primary_key=True)
-    season_id = Column(Integer, ForeignKey('Seasons.id'), nullable=False)
-    owner_id = Column(Integer, ForeignKey('Owners.id'), nullable=False)
+    season_id = Column(Integer, ForeignKey("Seasons.id"), nullable=False)
+    owner_id = Column(Integer, ForeignKey("Owners.id"), nullable=False)
     espn_team_id = Column(String, nullable=False)
     team_name = Column(String)
     abbrev = Column(String)
 
-    __table_args__ = (UniqueConstraint(
-        'season_id', 'espn_team_id', name='idx_season_team_id'),)
+    __table_args__ = (
+        UniqueConstraint("season_id", "espn_team_id", name="idx_season_team_id"),
+    )
 
     season = relationship("Season", back_populates="teams")
     draftpicks = relationship("Draftpick", back_populates="team")
@@ -39,6 +46,5 @@ class Team(Base):
 
 
 if __name__ == "__main__":
-    engine = create_engine(
-        "sqlite+pysqlite:///:memory:", echo=True, future=True)
+    engine = create_engine("sqlite+pysqlite:///:memory:", echo=True, future=True)
     Base.metadata.create_all(engine)
